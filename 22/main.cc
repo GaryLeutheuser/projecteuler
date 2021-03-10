@@ -4,6 +4,16 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <numeric>
+
+int score_name(std::string name) {
+    int score = 0;
+    for (auto c : name) {
+        score += c - 'A' + 1;
+    }
+
+    return score;
+}
 
 int main() {
     // Get unchanged input.
@@ -30,17 +40,19 @@ int main() {
     std::sort(names.begin(), names.end());
 
     // Score the names.
-    int score_sum = 0;
-    int i = 1;
+    std::vector<int> scores(names.size());
+
+    // Compute scores.
+    std::transform(names.cbegin(), names.cend(), scores.begin(), score_name);
     
-    for (auto it = names.cbegin(); it != names.cend(); ++it) {
-        int name_score = 0;
-        for (auto c : *it) {
-            name_score += c - 'A' + 1;
-        }
-        name_score *= i++;
-        score_sum += name_score;
-    }
+    std::cout << "Raw scores computed.\n";
+
+    // Multiply scores by index.
+    int i = 1;
+    std::for_each(scores.begin(), scores.end(), [&i](int &score){score *= i++;});
+    
+    // Sum the scores.
+    int score_sum = std::accumulate(scores.cbegin(), scores.cend(), 0);
 
     std::cout << score_sum << std::endl;
 
