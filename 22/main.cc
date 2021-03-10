@@ -44,8 +44,6 @@ int main() {
 
     // Compute scores.
     std::transform(names.cbegin(), names.cend(), scores.begin(), score_name);
-    
-    std::cout << "Raw scores computed.\n";
 
     // Multiply scores by index.
     int i = 1;
